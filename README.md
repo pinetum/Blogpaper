@@ -171,7 +171,7 @@ The MIT License (MIT). Copyright (c) 2019-2020 Erwan Normand <normand.erwan@prot
 
 See the [LICENSE.md](LICENSE.md) file for details.
 
-Blogpaper uses the following third-party resources:
+Blogpaper uses the following third-party banner:
 
 - [normalize.css](https://github.com/necolas/normalize.css): The MIT License (MIT).
 [Copyright © Nicolas Gallagher and Jonathan Neal.](https://github.com/necolas/normalize.css/blob/main/LICENSE.md).

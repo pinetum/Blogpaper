@@ -1,0 +1,85 @@
+{{- $src := .Src -}}
+{{ $image := (.Page.Resources.GetMatch  (index $src)) }}
+{{- with dict "Path" .Src "Resources" .Resources | partial "function/resource.html" -}}
+    {{- $image = . -}}
+{{- end -}}
+
+
+
+{{ $resize_optaion := ""}}
+{{ $src_set := ""}}
+{{ $src := $image }}
+{{ $xx_small := $image }}
+{{ $x_small := $image }}
+{{ $small := $image }}
+{{ $medium := $image }}
+{{ $large := $image }}
+{{ $orientation := 1 }}
+{{ with $image.Exif }}
+{{ with .Tags }}
+{{ with .Orientation }}
+{{ $orientation = . }}
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{ if eq $orientation 6 }}
+    {{ $resize_optaion = " r270"}}
+{{ else if (eq $orientation 8) }}
+    {{ $resize_optaion = " r90"}}
+{{ end }}
+
+
+{{- with dict "Path" .Watermark "Resources" .Resources | partial "function/resource.html" -}}
+    {{ $tempWatermarkW := div $image.Width 12 }}
+    {{ $tempWatermark := .Resize (print $tempWatermarkW "x") }}
+    {{ $x := sub (div $image.Width 2) (div $tempWatermarkW 2) }}
+    {{ $y := sub $image.Height $tempWatermark.Height }}
+    {{ $image = $image.Filter (images.Overlay $tempWatermark $x $y )}}
+{{ end }}
+
+
+{{ $opt := (print "300x" $resize_optaion) }}
+{{ $xx_small = $image.Resize $opt }}
+{{ $src_set = (print $xx_small.RelPermalink " 300w") }}
+
+{{ if ge $image.Width "500"}}
+    {{ $opt := (print "500x" $resize_optaion) }}
+    {{ $x_small = $image.Resize $opt }}
+    {{ $src_set = (print $src_set ", "  $x_small.RelPermalink " 500w") }}
+{{ end }}
+
+{{ if ge $image.Width "800"}}
+    {{ $opt := (print "800x" $resize_optaion) }}
+    {{ $small = $image.Resize $opt }}
+    {{ $src_set = (print $src_set ", " $small.RelPermalink " 800w") }}
+{{ end }}
+
+{{ if ge $image.Width "1200"}}
+{{ $opt := (print "1200x" $resize_optaion) }}
+{{ $medium = $image.Resize $opt }}
+{{ $src_set = (print $src_set ", " $medium.RelPermalink " 1200w") }}
+{{ end }}
+
+{{ if gt $image.Width "1800"}}
+{{ $opt := (print "1800x" $resize_optaion) }}
+{{ $large = $image.Resize $opt }}
+{{ $src_set = (print $src_set ", " $large.RelPermalink " 1800w") }}
+{{ end }}
+{{- $alt := .Alt | default $large.RelPermalink -}}
+
+{{ $attrWidth := "100%" }}
+{{ with .Width }}
+{{ $attrWidth = . }}
+{{end}}
+{{- $loading := resources.Get "loading.svg" | minify -}}
+
+<img
+        class="lazyload {{ with .Class }} {{ . }}{{ end }}"
+        src="{{ $loading.RelPermalink }}"
+        data-srcset="{{ $src_set }}"
+        data-sizes="auto"
+        alt="{{ $alt }}"{{ with .Height }} height="{{ . }}"{{ end }}{{ with $attrWidth }} width="{{ . }}"{{ end }} />
+
+
+

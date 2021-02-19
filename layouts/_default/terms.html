@@ -1,9 +1,19 @@
 {{ define "main" }}
   <section class="list">
     {{ partial "header" . }}
-
+   
     <div class="container">
       <div class="content">
+
+        {{ if eq .Data.Plural "tags" }}
+        <div class="tag-cloud-tags">
+          {{- range $.Site.Taxonomies.tags.ByCount -}}
+              <a href="{{ .Page.RelPermalink }}">{{ .Page.Title }} <sup>{{ .Count }}</sup></a>
+          {{- end -}}
+        </div>
+    
+        {{ else }}
+
         {{- range .Data.Pages }}
         <article class="summary">
           <header class="header">
@@ -21,7 +31,11 @@
           </div>
         </article>
         {{- end }}
+
+    {{ end }}
         </div>
+
     </div>
+
   </section>
 {{ end }}

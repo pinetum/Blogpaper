@@ -43,4 +43,8 @@
   {{/* Concat and link CSS files */}}
   {{- $css := $css_files | resources.Concat "main.css" | minify | fingerprint "sha512" -}}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+
+  {{- $lazyloadjs := resources.Get "js/lazysizes/lazysizes.min.js" -}}
+  <script src="{{ $lazyloadjs.RelPermalink }}"></script>
 </head>
