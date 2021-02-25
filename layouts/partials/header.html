@@ -20,7 +20,7 @@
       {{- $subtitle = $subtitle | default $default_subtitle -}}
 
       {{- with $subtitle }}
-        <div class="header__subtitle metadata">{{ . | markdownify }}</div>
+        <h5 class="header__subtitle metadata">{{ . | markdownify }}</h5>
       {{- end }}
     {{- end }}
   </div>

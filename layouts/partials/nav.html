@@ -1,19 +1,18 @@
 <nav class="nav">
-  <div class="nav__content container metadata">
-    <div class="nav__home">
-      <a href="{{ .Site.Home.RelPermalink }}" >
+  
+      <a class="logo nav__home" href="{{ .Site.Home.RelPermalink }}" >
         {{- with .Site.Params.navHome -}}
           {{- . -}}
         {{- else -}}
           {{- .Site.Title -}}
         {{- end -}}
       </a>
-    </div>
-
+    <input class="menu-btn" type="checkbox" id="menu-btn" />
+    <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
     {{- with .Site.Menus.main }}
-    <ul class="inline-list">
+    <ul class="menu">
       {{- range . }}
-        <li class="inline-list__item">
+        <li >
           {{- .Pre -}}
           <a href="{{ .URL }}" title="{{ .Title }}">{{ .Name }}</a>
           {{- .Post -}}
@@ -21,5 +20,4 @@
       {{- end }}
     </ul>
     {{- end }}
-  </div>
 </nav>
