@@ -1,6 +1,6 @@
 {{- $cdn := .Scratch.Get "cdn" | default dict -}}
 {{- $fingerprint := .Scratch.Get "fingerprint" -}}
-{{- $comment := .Scratch.Get "comment" | default dict -}}
+{{- $comment := .Site.Params.page.comment | default dict -}}
 {{- $commentConfig := dict -}}
 
 {{- if $comment.enable -}}
@@ -10,7 +10,7 @@
         {{- if $disqus.enable -}}
             <div id="disqus_thread" class="comment"></div>
             {{- $source := printf "https://%v.disqus.com/embed.js" $disqus.shortname -}}
-            {{- dict "Source" $source "Defer" true | dict "Scratch" .Scratch "Data" | partial "scratch/script.html" -}}
+            <script src="{{ $source }}"></script>
             <noscript>
                 Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
             </noscript>
@@ -61,14 +61,15 @@
         {{- $facebook := $comment.facebook | default dict -}}
         {{- if $facebook.enable -}}
             <div id="fb-root" class="comment"></div>
+            {{ .Permalink  }}
             <div
                 class="fb-comments"
-                data-href="{{ .Permalink }}"
+                data-href="{{ .Page.Permalink }}"
                 data-width="{{ $facebook.width }}"
                 data-numposts="{{ $facebook.numPosts }}"
             ></div>
             {{- $source := printf "https://connect.facebook.net/%v/sdk.js#xfbml=1&version=v5.0&appId=%v&autoLogAppEvents=1" ($facebook.languageCode | default (T "facebookLanguageCode")) $facebook.appId -}}
-            {{- dict "Source" $source "Defer" true | dict "Scratch" .Scratch "Data" | partial "scratch/script.html" -}}
+            <script src="{{ $source }}"></script>
             <noscript>
                 Please enable JavaScript to view the comments powered by <a href="https://developers.facebook.com/docs/plugins/comments/"></a>Facebook</a>.
             </noscript>

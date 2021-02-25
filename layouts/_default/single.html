@@ -10,7 +10,7 @@
         {{- partial "taxonomies" (dict "Page" . "term" "tags") }}
       </footer>
       {{- /* Comment */ -}}
-        {{- partial "comment.html" . -}}
+        {{- partial "comment.html" (dict "Page" . "Site" .Site) -}}
       {{- end }}
     </div>
   </article>
