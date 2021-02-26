@@ -1,24 +1,26 @@
 <figure class="banner">
-  {{- with .page_href -}}
+  {{- with .banner.page_href -}}
   <a href="{{ . }}">
   {{- end -}}
-
-  <img src="{{ .resource.RelPermalink }}" alt="{{ .alt }}" />
-
-  {{- with .page_href -}}
+  {{- $options := dict "Src" .banner.resource -}}
+  {{- $options := dict "Alt" .banner.alt | merge $options -}}
+  {{- $options = dict "Resources" .Page.Resources | merge $options -}}
+  <!-- <img src="{{ .resource.RelPermalink }}" alt="{{ .alt }}" /> -->
+  {{- partial "plugin/imagesize.html" $options -}}
+  {{- with .banner.page_href -}}
   </a>
   {{- end -}}
 
-  {{- if or .caption .href }}
+  {{- if or .banner.caption .href }}
     <figcaption class="metadata">
 
-      {{- with .href -}}
+      {{- with .banner.href -}}
       <a href="{{ . }}">
       {{- end -}}
 
-        {{- with .caption -}} {{ . }} {{- end -}}
+        {{- with .banner.caption -}} {{ . }} {{- end -}}
 
-      {{- with .href -}}
+      {{- with .banner.href -}}
       </a>
       {{- end -}}
 

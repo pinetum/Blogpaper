@@ -5,7 +5,6 @@
 {{- end -}}
 
 
-
 {{ $resize_optaion := ""}}
 {{ $src_set := ""}}
 {{ $src := $image }}
@@ -38,6 +37,7 @@
     {{ $image = $image.Filter (images.Overlay $tempWatermark $x $y )}}
 {{ end }}
 
+{{ $loading_small := $image.Resize "24x q20" }}
 
 {{ $opt := (print "300x" $resize_optaion) }}
 {{ $xx_small = $image.Resize $opt }}
@@ -76,7 +76,7 @@
 
 <img
         class="lazyload {{ with .Class }} {{ . }}{{ end }}"
-        src="{{ $loading.RelPermalink }}"
+        src="data:image/jpeg;base64,{{ $loading_small.Content | base64Encode }}"
         data-srcset="{{ $src_set }}"
         data-sizes="auto"
         alt="{{ $alt }}"{{ with .Height }} height="{{ . }}"{{ end }}{{ with $attrWidth }} width="{{ . }}"{{ end }} />

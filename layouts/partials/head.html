@@ -18,6 +18,9 @@
   {{- end -}}
   {{- end }}
 
+  {{ with .Site.Params.page.comment.facebook.admins }}
+    <meta property="fb:admins" content="{{ . }}"/>
+  {{ end }}
   {{- range .AlternativeOutputFormats }}
   <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .RelPermalink }}" title="{{ $.Site.Title | safeHTML }}">
   {{- end }}
@@ -47,5 +50,12 @@
 
   {{- $lazyloadjs := resources.Get "js/lazysizes/lazysizes.min.js" -}}
   <script src="{{ $lazyloadjs.RelPermalink }}"></script>
+  <style>
+     .lazyloading {
+        filter: blur(1.5rem);
+        /* this is needed so Safari keeps sharp edges */
+        transform: scale(1);
+      }
+  </style>
     
 </head>

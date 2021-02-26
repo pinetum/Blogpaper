@@ -1,8 +1,11 @@
 {{/* If banner not explicitly deactivated on page ('banner: false' on front matter) */}}
 {{- if not (eq .Page.Params.banner false) -}}
 
+  {{- $bannerOptions := dict -}}
+  {{- $bannerOptions = dict "Page" .Page | merge $bannerOptions -}}
+
   {{/* Get 'banner' from front matter, complete with default values */}}
-  {{- $banner := dict "src" "" "caption" "" "href" "" "alt" (print "Header banner of '" .Page.Name "'") -}}
+  {{- $banner := dict "src" "" "caption" "" "href" "" "alt" .Page.Name -}}
   {{- if .Page.Params.banner -}}
     {{- $banner = merge $banner .Page.Params.banner -}}
   {{- end -}}
@@ -16,7 +19,8 @@
   {{/* Try to get banner as page resource */}}
   {{- with .Page.Resources.GetMatch $banner.src -}}
     {{- $banner = merge $banner (dict "resource" .) -}}
-    {{- partial "banner-figure" $banner }}
+    {{- $bannerOptions = dict "banner" $banner  | merge $bannerOptions -}}
+    {{- partial "banner-figure" $bannerOptions }}
 
   {{- else -}}
 
@@ -28,7 +32,8 @@
     {{- end -}}
 
     {{- if $banner.resource -}}
-      {{- partial "banner-figure" $banner }}
+    {{- $bannerOptions = dict "banner" $banner  | merge $bannerOptions -}}
+    {{- partial "banner-figure" $bannerOptions }}
 
     {{- else -}}
 
@@ -36,8 +41,8 @@
       {{- $src := .Page.Site.Params.banner | default "banner.*" -}}
       {{- with .Page.Resources.GetMatch $src -}}
         {{- $banner = merge $banner (dict "src" $src "resource" .) }}
-        {{- partial "banner-figure" $banner }}
-
+        {{- $bannerOptions = dict "banner" $banner  | merge $bannerOptions -}}
+        {{- partial "banner-figure" $bannerOptions }}
       {{- else -}}
 
         {{/* Or try to get the parent banner as fallback */}}
