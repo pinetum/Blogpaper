@@ -37,7 +37,7 @@
     {{ $image = $image.Filter (images.Overlay $tempWatermark $x $y )}}
 {{ end }}
 
-{{ $loading_small := $image.Resize "24x q20" }}
+{{ $loading_small := $image.Resize (print "24x q20" $resize_optaion) }}
 
 {{ $opt := (print "300x" $resize_optaion) }}
 {{ $xx_small = $image.Resize $opt }}
